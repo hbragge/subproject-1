@@ -64,6 +64,11 @@ Vagrant.configure("2") do |config|
 
     sudo apt-get install -y couchdb
     curl -X PUT http://localhost:5984/_config/httpd/bind_address -d '"0.0.0.0"'
+    curl -X PUT http://localhost:5984/_config/httpd/enable_cors -d '"true"'
+    curl -X PUT http://localhost:5984/_config/cors/origins -d '"*"'
+    curl -X PUT http://localhost:5984/_config/cors/credentials -d '"true"'
+    curl -X PUT http://localhost:5984/_config/cors/methods -d '"GET, PUT, POST, HEAD, DELETE"'
+    curl -X PUT http://localhost:5984/_config/cors/headers -d '"accept, authorization, content-type, origin, referer, x-csrf-token"'
     sudo service couchdb restart
 
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
