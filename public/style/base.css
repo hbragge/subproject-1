@@ -37,7 +37,7 @@ body {
 #todoapp {
   background: #fff;
   background: rgba(255, 255, 255, 0.9);
-  margin: 130px 0 40px 0;
+  margin: 230px 0 40px 0;
   border: 1px solid #ccc;
   position: relative;
   border-top-left-radius: 2px;
@@ -64,23 +64,6 @@ body {
 #todoapp input:-moz-placeholder {
   font-style: italic;
   color: #a9a9a9;
-}
-
-#todoapp h1 {
-  position: absolute;
-  top: -120px;
-  width: 100%;
-  font-size: 70px;
-  font-weight: bold;
-  text-align: center;
-  color: #b3b3b3;
-  color: rgba(255, 255, 255, 0.3);
-  text-shadow: -1px -1px rgba(0, 0, 0, 0.2);
-  -webkit-text-rendering: optimizeLegibility;
-  -moz-text-rendering: optimizeLegibility;
-  -ms-text-rendering: optimizeLegibility;
-  -o-text-rendering: optimizeLegibility;
-  text-rendering: optimizeLegibility;
 }
 
 #header {
@@ -421,4 +404,12 @@ label[for='toggle-all'] {
 
 [data-sync-state=error] #sync-error {
   display: block;
+}
+
+#subprojectlogo {
+  width: 50%;
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  margin-left: -25%;
 }
