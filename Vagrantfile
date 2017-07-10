@@ -61,7 +61,11 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     sudo apt-get -qq update 
+
     sudo apt-get install -y couchdb
+    curl -X PUT http://localhost:5984/_config/httpd/bind_address -d '"0.0.0.0"'
+    sudo service couchdb restart
+
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     sudo apt-get install -y nodejs
   SHELL
