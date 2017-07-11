@@ -1,0 +1,24 @@
+{
+  "name": "v1",
+  "version": "1.0.0",
+  "description": "subproject",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "PORT=3000 IP=localhost node_modules/.bin/nodemon app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.3.4",
+    "express": "^4.13.3",
+    "express-session": "^1.11.3",
+    "method-override": "^2.3.5",
+    "nano": "^6.4.0",
+    "nodemon": "^1.11.0",
+    "passport": "^0.3.0",
+    "passport-local": "^1.0.0",
+    "request": "^2.65.0"
+  }
+}

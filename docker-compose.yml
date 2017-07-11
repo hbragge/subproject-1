@@ -1,0 +1,17 @@
+version: "2"
+services:
+  web:
+    build: .
+    volumes:
+      - ./:/opt/app
+    ports:
+      - "3000:3000"
+    links:
+      - couchdb
+  couchdb:
+    image: couchdb
+    volumes:
+    - ./etc:/usr/local/etc/couchdb/local.d
+    - ./lib:/usr/local/var/lib/couchdb
+    ports:
+      - "5984:5984"
