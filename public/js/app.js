@@ -9,7 +9,7 @@
   // EDITING STARTS HERE (you dont need to edit anything above this line)
 
   var db = new PouchDB('todos');
-  var remoteCouch = 'http://admin:admin@192.168.33.10:5984/todos';
+  var remoteCouch = 'http://admin:admin@127.0.0.1:5984/todos';
 
   db.changes({
     since: 'now',
