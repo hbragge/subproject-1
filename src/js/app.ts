@@ -13,8 +13,8 @@ import * as PouchDB from 'pouchdb';
   var remoteDb: any = new PouchDB('http://admin:admin@127.0.0.1:5984/todos', {skip_setup: true});
 
   function signupUser() {
-    var usernameInput = document.getElementById('signup-username');
-    var passwordInput = document.getElementById('signup-password');
+    var usernameInput: any = document.getElementById('signup-username');
+    var passwordInput: any = document.getElementById('signup-password');
     var username = usernameInput.value;
     var password = passwordInput.value;
     usernameInput.value = '';
