@@ -1,27 +1,22 @@
+import * as PouchDB from 'pouchdb';
 (function() {
 
   'use strict';
 
-  var ENTER_KEY = 13;
-  var newTodoDom = document.getElementById('new-todo');
+  var ENTER_KEY: number = 13;
+  var newTodoDom: any = document.getElementById('new-todo');
   var syncDom = document.getElementById('sync-wrapper');
 
   // EDITING STARTS HERE (you dont need to edit anything above this line)
 
   var db = new PouchDB('todos');
-  var remoteDb = new PouchDB('http://admin:admin@192.168.33.10:5984/todos', {skip_setup: true});
+  var remoteDb: any = new PouchDB('http://admin:admin@127.0.0.1:5984/todos', {skip_setup: true});
 
-  function signupUser() {
-    var usernameInput = document.getElementById('signup-username');
-    var passwordInput = document.getElementById('signup-password');
-    var username = usernameInput.value;
-    var password = passwordInput.value;
-    usernameInput.value = '';
-    passwordInput.value = '';
-    remoteDb.signup(username, password, function (err, response) {
+  function signup() {
+    remoteDb.signup('batman', 'brucewayne', function (err, response) {
       if (err) {
         if (err.name === 'conflict') {
-          console.log('user already exists, choose another username');
+          console.log('"batman" already exists, choose another username');
         } else if (err.name === 'forbidden') {
           console.log('invalid username');
         } else {
@@ -32,13 +27,10 @@
   }
 
   function loginUser() {
-    var usernameInput = document.getElementById('login-username');
-    var passwordInput = document.getElementById('login-password');
-    var username = usernameInput.value;
-    var password = passwordInput.value;
-    usernameInput.value = '';
-    passwordInput.value = '';
-    remoteDb.login(username, password, function (err, response) {
+    var loginForm = document.getElementById('login-form');
+    loginForm['style'].display = "block";
+/*
+    remoteDb.login('batman', 'brucewayne', function (err, response) {
       if (err) {
         if (err.name === 'unauthorized') {
           console.log('name or password incorrect');
@@ -48,6 +40,7 @@
       }
       showLogin();
     });
+    */
   }
 
   function logoutUser() {
@@ -77,14 +70,24 @@
   }
 
   function setupHeadline() {
-    var signupLink = document.getElementById('signup-button');
-    signupLink.addEventListener('click', signupUser);
+    var headLine = document.getElementById('head-line');
 
-    var loginLink = document.getElementById('login-button');
+    var loginLink = document.createElement('button');
+    loginLink.type = "button";
+    loginLink.className = "pull-right";
+    loginLink.setAttribute("data-toggle", "modal")
+    loginLink.setAttribute("data-target", "#loginModal")
+    loginLink.appendChild( document.createTextNode('Login'));
     loginLink.addEventListener('click', loginUser);
 
-    var logoutLink = document.getElementById('logout-button');
+    var logoutLink = document.createElement('button');
+    logoutLink.type = "button";
+    logoutLink.className = "pull-right";
+    logoutLink.appendChild( document.createTextNode('Logout'));
     logoutLink.addEventListener('click', logoutUser);
+
+    headLine.appendChild(logoutLink);
+    headLine.appendChild(loginLink);
   }
 
   db.changes({
@@ -108,7 +111,7 @@
 
   // Show the current list of todos by reading them from the database
   function showTodos() {
-    db.allDocs({include_docs: true, descending: true}, function(err, doc) {
+    db.allDocs({include_docs: true, descending: true}).then(function(doc) {
       redrawTodosUI(doc.rows);
     });
   }
