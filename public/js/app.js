@@ -26,6 +26,9 @@
   }
 
   function loginUser() {
+    var loginForm = document.getElementById('login-form');
+    loginForm.style = "display: block;";
+/*
     remoteDb.login('batman', 'brucewayne', function (err, response) {
       if (err) {
         if (err.name === 'unauthorized') {
@@ -36,6 +39,7 @@
       }
       showLogin();
     });
+    */
   }
 
   function logoutUser() {
@@ -68,19 +72,21 @@
     var headLine = document.getElementById('head-line');
 
     var loginLink = document.createElement('button');
-    //loginLink.className = '';
     loginLink.type = "button";
+    loginLink.className = "pull-right";
+    loginLink.setAttribute("data-toggle", "modal")
+    loginLink.setAttribute("data-target", "#loginModal")
     loginLink.appendChild( document.createTextNode('Login'));
     loginLink.addEventListener('click', loginUser);
 
     var logoutLink = document.createElement('button');
-    //logoutLink.className = '';
     logoutLink.type = "button";
+    logoutLink.className = "pull-right";
     logoutLink.appendChild( document.createTextNode('Logout'));
     logoutLink.addEventListener('click', logoutUser);
 
-    headLine.appendChild(loginLink);
     headLine.appendChild(logoutLink);
+    headLine.appendChild(loginLink);
   }
 
   db.changes({
@@ -166,41 +172,14 @@
   // Given an object representing a todo, this will create a list item
   // to display it.
   function createTodoListItem(todo) {
-    var checkbox = document.createElement('input');
-    checkbox.className = 'toggle';
-    checkbox.type = 'checkbox';
-    checkbox.addEventListener('change', checkboxChanged.bind(this, todo));
-
-    var label = document.createElement('label');
+    var label = document.createElement('span');
     label.appendChild( document.createTextNode(todo.title));
     label.addEventListener('dblclick', todoDblClicked.bind(this, todo));
 
-    var deleteLink = document.createElement('button');
-    deleteLink.className = 'destroy';
-    deleteLink.addEventListener( 'click', deleteButtonPressed.bind(this, todo));
-
-    var divDisplay = document.createElement('div');
-    divDisplay.className = 'view';
-    divDisplay.appendChild(checkbox);
-    divDisplay.appendChild(label);
-    divDisplay.appendChild(deleteLink);
-
-    var inputEditTodo = document.createElement('input');
-    inputEditTodo.id = 'input_' + todo._id;
-    inputEditTodo.className = 'edit';
-    inputEditTodo.value = todo.title;
-    inputEditTodo.addEventListener('keypress', todoKeyPressed.bind(this, todo));
-    inputEditTodo.addEventListener('blur', todoBlurred.bind(this, todo));
-
     var li = document.createElement('li');
     li.id = 'li_' + todo._id;
-    li.appendChild(divDisplay);
-    li.appendChild(inputEditTodo);
-
-    if (todo.completed) {
-      li.className += 'complete';
-      checkbox.checked = true;
-    }
+    li.className = "list-group-item";
+    li.appendChild(label);
 
     return li;
   }
