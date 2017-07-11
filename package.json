@@ -4,6 +4,7 @@
   "description": "labdays2017 project",
   "main": "webpack.config.js",
   "dependencies": {
+    "@types/requirejs": "^2.1.29",
     "awesome-typescript-loader": "^3.2.1",
     "source-map-loader": "^0.2.1",
     "webpack": "^3.1.0"

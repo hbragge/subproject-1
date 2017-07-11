@@ -1,9 +1,13 @@
 {
+
     "compilerOptions": {
         "outDir": "./public/js",
         "allowJs": true,
         "target": "es6",
-        "types": [ "pouchdb"]
+        "types": [ "pouchdb", "node"],
+        "typeRoots": [
+            "node_modules/@types"
+         ]
     },
     "exclude": [
         "node_modules"
