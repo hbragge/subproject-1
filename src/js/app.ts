@@ -1,3 +1,5 @@
+require("jquery");
+require("bootstrap");
 var PouchDB_ = require("pouchdb");
 PouchDB_.plugin(require('pouchdb-authentication'));
 (function() {
@@ -11,7 +13,7 @@ PouchDB_.plugin(require('pouchdb-authentication'));
   // EDITING STARTS HERE (you dont need to edit anything above this line)
 
   var db = new PouchDB_('todos');
-  var remoteDb: any = new PouchDB_('http://admin:admin@127.0.0.1:5984/todos', {skip_setup: true});
+  var remoteDb: any = new PouchDB_('http://admin:admin@192.168.33.10:5984/todos', {skip_setup: true});
 
   function signupUser() {
     var usernameInput: any = document.getElementById('signup-username');
