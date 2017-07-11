@@ -61,3 +61,5 @@ todos.couch
 testdb.couch
 _users.couch
 _replicator.couch
+.vscode
+public/js
