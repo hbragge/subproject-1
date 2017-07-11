@@ -33,8 +33,8 @@ import * as PouchDB from 'pouchdb';
   }
 
   function loginUser() {
-    var usernameInput = document.getElementById('login-username');
-    var passwordInput = document.getElementById('login-password');
+    var usernameInput: any = document.getElementById('login-username');
+    var passwordInput: any = document.getElementById('login-password');
     var username = usernameInput.value;
     var password = passwordInput.value;
     usernameInput.value = '';
@@ -109,7 +109,7 @@ import * as PouchDB from 'pouchdb';
 
   // Show the current list of todos by reading them from the database
   function showTodos() {
-    db.allDocs({include_docs: true, descending: true}, function(err, doc) {
+    db.allDocs({include_docs: true, descending: true}).then(function(doc) {
       redrawTodosUI(doc.rows);
     });
   }
