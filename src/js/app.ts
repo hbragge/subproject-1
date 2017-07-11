@@ -12,11 +12,17 @@ import * as PouchDB from 'pouchdb';
   var db = new PouchDB('todos');
   var remoteDb: any = new PouchDB('http://admin:admin@127.0.0.1:5984/todos', {skip_setup: true});
 
-  function signup() {
-    remoteDb.signup('batman', 'brucewayne', function (err, response) {
+  function signupUser() {
+    var usernameInput = document.getElementById('signup-username');
+    var passwordInput = document.getElementById('signup-password');
+    var username = usernameInput.value;
+    var password = passwordInput.value;
+    usernameInput.value = '';
+    passwordInput.value = '';
+    remoteDb.signup(username, password, function (err, response) {
       if (err) {
         if (err.name === 'conflict') {
-          console.log('"batman" already exists, choose another username');
+          console.log('user already exists, choose another username');
         } else if (err.name === 'forbidden') {
           console.log('invalid username');
         } else {
@@ -27,10 +33,13 @@ import * as PouchDB from 'pouchdb';
   }
 
   function loginUser() {
-    var loginForm = document.getElementById('login-form');
-    loginForm['style'].display = "block";
-/*
-    remoteDb.login('batman', 'brucewayne', function (err, response) {
+    var usernameInput = document.getElementById('login-username');
+    var passwordInput = document.getElementById('login-password');
+    var username = usernameInput.value;
+    var password = passwordInput.value;
+    usernameInput.value = '';
+    passwordInput.value = '';
+    remoteDb.login(username, password, function (err, response) {
       if (err) {
         if (err.name === 'unauthorized') {
           console.log('name or password incorrect');
@@ -40,7 +49,6 @@ import * as PouchDB from 'pouchdb';
       }
       showLogin();
     });
-    */
   }
 
   function logoutUser() {
@@ -70,24 +78,14 @@ import * as PouchDB from 'pouchdb';
   }
 
   function setupHeadline() {
-    var headLine = document.getElementById('head-line');
+    var signupLink = document.getElementById('signup-button');
+    signupLink.addEventListener('click', signupUser);
 
-    var loginLink = document.createElement('button');
-    loginLink.type = "button";
-    loginLink.className = "pull-right";
-    loginLink.setAttribute("data-toggle", "modal")
-    loginLink.setAttribute("data-target", "#loginModal")
-    loginLink.appendChild( document.createTextNode('Login'));
+    var loginLink = document.getElementById('login-button');
     loginLink.addEventListener('click', loginUser);
 
-    var logoutLink = document.createElement('button');
-    logoutLink.type = "button";
-    logoutLink.className = "pull-right";
-    logoutLink.appendChild( document.createTextNode('Logout'));
+    var logoutLink = document.getElementById('logout-button');
     logoutLink.addEventListener('click', logoutUser);
-
-    headLine.appendChild(logoutLink);
-    headLine.appendChild(loginLink);
   }
 
   db.changes({
@@ -111,7 +109,7 @@ import * as PouchDB from 'pouchdb';
 
   // Show the current list of todos by reading them from the database
   function showTodos() {
-    db.allDocs({include_docs: true, descending: true}).then(function(doc) {
+    db.allDocs({include_docs: true, descending: true}, function(err, doc) {
       redrawTodosUI(doc.rows);
     });
   }
