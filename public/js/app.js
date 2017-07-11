@@ -9,7 +9,79 @@
   // EDITING STARTS HERE (you dont need to edit anything above this line)
 
   var db = new PouchDB('todos');
-  var remoteCouch = 'http://admin:admin@127.0.0.1:5984/todos';
+  var remoteDb = new PouchDB('http://admin:admin@192.168.33.10:5984/todos', {skip_setup: true});
+
+  function signup() {
+    remoteDb.signup('batman', 'brucewayne', function (err, response) {
+      if (err) {
+        if (err.name === 'conflict') {
+          console.log('"batman" already exists, choose another username');
+        } else if (err.name === 'forbidden') {
+          console.log('invalid username');
+        } else {
+          console.log('signup failed');
+        }
+      }
+    });
+  }
+
+  function loginUser() {
+    remoteDb.login('batman', 'brucewayne', function (err, response) {
+      if (err) {
+        if (err.name === 'unauthorized') {
+          console.log('name or password incorrect');
+        } else {
+          console.log('login failed');
+        }
+      }
+      showLogin();
+    });
+  }
+
+  function logoutUser() {
+    remoteDb.logout(function (err, response) {
+      if (err) {
+        console.log('logout error');
+      }
+      console.log(response);
+      showLogin();
+    });
+  }
+
+  function showLogin() {
+    remoteDb.getSession(function (err, response) {
+      if (err) {
+        console.log('getSession network error');
+      } else if (!response.userCtx.name) {
+        console.log('nobody logged in');
+        var statusLine = document.getElementById('status-line');
+        statusLine.innerHTML = 'Nobody logged in';
+      } else {
+        console.log(response.userCtx.name);
+        var statusLine = document.getElementById('status-line');
+        statusLine.innerHTML = 'Welcome, '+response.userCtx.name;
+      }
+    });
+  }
+
+  function setupHeadline() {
+    var headLine = document.getElementById('head-line');
+
+    var loginLink = document.createElement('button');
+    //loginLink.className = '';
+    loginLink.type = "button";
+    loginLink.appendChild( document.createTextNode('Login'));
+    loginLink.addEventListener('click', loginUser);
+
+    var logoutLink = document.createElement('button');
+    //logoutLink.className = '';
+    logoutLink.type = "button";
+    logoutLink.appendChild( document.createTextNode('Logout'));
+    logoutLink.addEventListener('click', logoutUser);
+
+    headLine.appendChild(loginLink);
+    headLine.appendChild(logoutLink);
+  }
 
   db.changes({
     since: 'now',
@@ -63,8 +135,8 @@
   function sync() {
     syncDom.setAttribute('data-sync-state', 'syncing');
     var opts = {live: true};
-    db.replicate.to(remoteCouch, opts, syncError);
-    db.replicate.from(remoteCouch, opts, syncError);
+    db.replicate.to(remoteDb, opts, syncError);
+    db.replicate.from(remoteDb, opts, syncError);
   }
 
   // EDITING STARTS HERE (you dont need to edit anything below this line)
@@ -153,9 +225,11 @@
   }
 
   addEventListeners();
+  setupHeadline();
   showTodos();
+  showLogin();
 
-  if (remoteCouch) {
+  if (remoteDb) {
     sync();
   }
 

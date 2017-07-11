@@ -413,3 +413,9 @@ label[for='toggle-all'] {
   left: 50%;
   margin-left: -25%;
 }
+
+#head-line button {
+  float: right;
+  margin-left: 10px;
+}
+
